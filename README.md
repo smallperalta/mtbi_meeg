@@ -3,11 +3,10 @@
 Pipeline for the processing and analysis of EEG data from mild Traumatic Brain Injuries (mTBI) patients.
 
 The processing pipeline reads raw EEG data and processes it to obtain bandpower data.
-The analysis pipeline utilizes ML models for classifying the subjects.
-
+The analysis pipeline utilizes ML models for classifying the subjects. 
 The preprocessing and analysis sections are run separately.
 
-Authors: Verna Heikkinen, Mia Liljeström, Aino Kuusi, Estanislao Porta
+_Authors: Verna Heikkinen, Mia Liljeström, Aino Kuusi, Estanislao Porta_
 
 ## Diagram
 The diagram of the pipeline can be seen in the following diagram:
@@ -33,7 +32,7 @@ mtbi_meeg/
 │   ├── config_common.py
 │   ├── fnames.py
 │   ├── pickle_data_handler.py
-│   ├── other_files/ (some old / unused files)
+│   ├── other_files/
 │   ├── analysis/
 │   │    ├── 01_read_processed_data.py
 │   │    ├── 02_plot_processed_data.py
@@ -66,9 +65,9 @@ $ python3 -m pip install .
 ```
 This will install all the necessary dependencies for the package to work. 
 
-In the case that freely installing dependencies in the local computer is not possible or not desirable, an option is to create a conda environment or start a Docker container. Instructions using these two alternative methods are descibed below. 
+In the case that freely installing dependencies in the local computer is not possible or not desirable, an option is to create a conda environment or start a Docker container. Instructions using these two alternative methods are described below. 
 
-## Installing in a Conda enviornment
+## Installing in a Conda environment
 1. After cloning the repository, navigate to the root directory.
 2. Create the conda environment by running,
     ```
@@ -90,7 +89,7 @@ This Dockerfile specifies a base image (`continuumio/miniconda3:latest`), update
 
 2. Run the Docker container: Run the command `docker run -it mtbi_meeg` to start the container and run your package. This will start a new container based on the my_package image and run the default command specified in the Dockerfile.
 
-## Getting started: config_common and system_check
+## Getting started: config_common and check_system
 
 Before the first time you execute the scripts in this repository, you must edit the file `src/config_common.py` and include a new block with information about your user, workstation, data directories, and matplotlib backend:
 
@@ -115,7 +114,7 @@ Before the first time you execute the scripts in this repository, you must edit 
 3. Add the path where `raw_data_dir` is expected ('/net/theta/fishpool/projects/tbi_meg/BIDS' in BioMag)
 4. Add the path where `processed_data_dir` is expected (Be mindful which folder you choose, as you may overwrite other people's data)
 5. Add the paths where figures and reports will be created into (you can use the directories in this repository or other)
-6. Add the matplotlib backend (TBC)
+6. Add the matplotlib backend ("use Qt5Agg for desktop, Agg for headless/HPC")
 7. Check that your system has the required dependencies by running the script `check_system.py`. From terminal, 
     ```bash
     $ python3 check_system.py
@@ -126,7 +125,7 @@ If there's no problems, you should see a message saying that 'System requirement
 If there is an issue with packages or versions, you will see a message indicating the library with a Version Conflict. Please update the package
 ```bash
 # For updating using pip,
-$ python3 -m pip upgrade <package-name>
+$ python3 -m  pip install --upgrade <package-name>
 # For updating using conda,
 $ conda update <package-name>
 ```
@@ -170,7 +169,7 @@ $ python3 run_files.py
 ```
 
 ## Analysis pipeline
-The data analysis is done using the scripts in the folder `src/analysis`. The aim is to use different classifiers (LR, LDA, SVM and RF) to differentiate between patients and controls. A file `subjects.txt` is expected in this folder
+The data analysis is done using the scripts in the folder `src/analysis`. The aim is to use different classifiers (LR, LDA, SVM and RF) to differentiate between patients and controls. A file `subjects.txt` is expected in this folder.
 
 **Files:**
 - `01_read_processed_data.py`: Reads in EEG bandpower data from CSV files into a dataframe. The dataframe and the arguments used to run the script are added to a pickle object.
@@ -183,7 +182,7 @@ The data analysis is done using the scripts in the folder `src/analysis`. The ai
 
 **Inputs:**
 - Processed files: CSV files with bandpower data (in folder `processed_data_dir`)
-- List of subjects in 
+- List of subjects in `subjects.txt`
 - parameters defined in `config_eeg.py`
 
 **Outputs:**
@@ -213,12 +212,12 @@ An example of the file can be seen below:
 01C
 01P
 02C
-02C
+02P
 # etc
 ```
 
 # Instructions for running it in Aalto's HPC
-
+> Note: these instructions are based on the official Triton documentation. BioMag users should verify module names by running `module spider conda` on the login node.
 ## 1. Get access
 Request a Triton account at https://scicomp.aalto.fi/triton/accounts/
 (separate from your Aalto account). Access is free for Aalto researchers.
@@ -287,7 +286,7 @@ scancel JOBID      # cancel a job
 
 
 # Contributing
-Contributions welcome — fork the repo, work on a branch, and open a PR against `main`. New to the flow? See [GitHub's PR docs](https://docs.github.com/en/pull-requests).
+Contributions are welcome: fork the repo, work on a branch, and open a PR against `main`. New to Github? See [GitHub's documentation on PRs](https://docs.github.com/en/pull-requests).
 
 # License
 Project under MIT License
