@@ -121,7 +121,7 @@ Before the first time you execute the scripts in this repository, you must edit 
     ```
 If there's no problems, you should see a message saying that 'System requirements are ok' and you should be ok to run the pipeline now.
 
-#### Version Conflict errors
+### Version Conflict errors
 If there is an issue with packages or versions, you will see a message indicating the library with a Version Conflict. Please update the package
 ```bash
 # For updating using pip,
@@ -129,13 +129,13 @@ $ python3 -m  pip install --upgrade <package-name>
 # For updating using conda,
 $ conda update <package-name>
 ```
-#### Missing raw data dir errors
+### Missing raw data dir errors
  If raw data is missing, the repository cannot be used.
 
-# Running the pipelines
+## Running the pipelines
 Once you have added the required information in config_common and checked that all the dependencies are met, you can run the `preprocessing` or `analysis` sections. If you haven't, please follow the instructions described above.
 
-## Preprocessing
+### Preprocessing
 The preprocessing pipeline can be found in `src/processing/`. The aim of this pipeline is to clean up the data and extract useful features, so data can be used by the classifiers in the analysis section.
 
 **Files:**
@@ -153,7 +153,7 @@ The preprocessing pipeline can be found in `src/processing/`. The aim of this pi
 - Processed files: CSV files with bandpower data (in folder `processed_data_dir`)
 - Reports
 
-#### How to run:
+#### How to run
 Go to the folder `src/processing`. Make sure that file `subjects.txt` exists in the folder.
 
 You can run one file at a time using `python3 <filename> <arguments>`.
@@ -168,7 +168,7 @@ $ cd src/processing/
 $ python3 run_files.py
 ```
 
-## Analysis pipeline
+### Analysis pipeline
 The data analysis is done using the scripts in the folder `src/analysis`. The aim is to use different classifiers (LR, LDA, SVM and RF) to differentiate between patients and controls. A file `subjects.txt` is expected in this folder.
 
 **Files:**
@@ -191,7 +191,7 @@ The data analysis is done using the scripts in the folder `src/analysis`. The ai
 - HTML reports
 - PDF with all the HTML reports
 
-#### How to run it:
+#### How to run it
 Go to the folder `src/analysis`. Make sure that file `subjects.txt` exists in the folder.
 
 You can run one file at a time using `python3 <filename> <arguments>`.
@@ -203,7 +203,7 @@ $ cd src/analysis/
 $ python3 run_files.py
 ```
 
-## Subjects as arguments
+### Subjects as arguments
 The current way of defining the subjects to be processed is either via command line arguments and running each step of the pipeline separately or by using `run_files.py`, along with a file where all the subjects to be processed exist, named `subjects.txt`.
 
 An example of the file can be seen below:
@@ -216,18 +216,18 @@ An example of the file can be seen below:
 # etc
 ```
 
-# Instructions for running it in Aalto's HPC
+## Instructions for running it in Aalto's HPC
 > Note: these instructions are based on the official Triton documentation. BioMag users should verify module names by running `module spider conda` on the login node.
-## 1. Get access
+### 1. Get access
 Request a Triton account at https://scicomp.aalto.fi/triton/accounts/
 (separate from your Aalto account). Access is free for Aalto researchers.
 
-## 2. Connect
+### 2. Connect
 ```bash
 ssh username@triton.aalto.fi
 ```
 
-## 3. Set up the environment
+### 3. Set up the environment
 Clone the repository and create the conda environment on Triton.
 Note: the raw data is already available at the BioMag data path
 defined in `config_common.py` — no transfer needed.
@@ -241,7 +241,7 @@ conda activate mtbi_meeg_conda
 pip install .
 ```
 
-## 4. Submit a single subject (serial job)
+### 4. Submit a single subject (serial job)
 Create a file `run_subject.sh`:
 
 ```bash
@@ -263,19 +263,19 @@ Submit with:
 sbatch run_subject.sh
 ```
 
-## 5. Monitor your job
+### 5. Monitor your job
 ```bash
 slurm queue        # check status
 slurm history      # see completed jobs
 scancel JOBID      # cancel a job
 ```
 
-## 6. Further reading
+### 6. Further reading
 - [Triton quickstart](https://scicomp.aalto.fi/triton/quickstart/)
 - [Serial jobs](https://scicomp.aalto.fi/triton/tut/serial/)
 - [Array jobs (per-subject parallelism)](https://scicomp.aalto.fi/triton/tut/array/)
 
-# Things that are yet to be implemented:
+## Things that are yet to be implemented:
 - [x] config file for analysis? 
 - [x] model fitting
 - [ ] hyperparameter optimization, triton-compatible
@@ -285,8 +285,8 @@ scancel JOBID      # cancel a job
 - [ ] Add slurm batching for HPC
 
 
-# Contributing
+## Contributing
 Contributions are welcome: fork the repo, work on a branch, and open a PR against `main`. New to Github? See [GitHub's documentation on PRs](https://docs.github.com/en/pull-requests).
 
-# License
+## License
 Project under MIT License
