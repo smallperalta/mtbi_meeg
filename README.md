@@ -18,8 +18,8 @@ The diagram of the pipeline can be seen in the following diagram:
 <Add images of the output control plots / ROC / metadata >
 
 ## Folder structure
-The folder structure for the project is shown below. The root folder is `mtbi_eeg`. The code is under `src`. Common scripts and config files are under `src/`.
-The modules for data processing and data analysis are under `src/processing/` and `src/analyisis/`.
+The folder structure for the project is shown below. The root folder is `mtbi_meeg`. The code is under `src`. Common scripts and config files are under `src/`.
+The modules for data processing and data analysis are under `src/processing/` and `src/analysis/`.
 
 ```bash
 mtbi_meeg/
@@ -36,24 +36,23 @@ mtbi_meeg/
 │   ├── other_files/ (some old / unused files)
 │   ├── analysis/
 │   │    ├── 01_read_processed_data.py
-│   │    ├── 02_plot_topographic_data.py (WIP)
-│   │    ├── 03_plot_processed_data.py
-│   │    ├── 04_fit_classifier_and_plot.py
-│   │    ├── 05_create_report.py
-│   │    ├── 06_convert_reports_to_pdf.py
+│   │    ├── 02_plot_processed_data.py
+│   │    ├── 03_fit_classifier_and_plot.py
+│   │    ├── 03_psd_topoplots.py (WIP)
+│   │    ├── 04_create_report.py
+│   │    ├── 05_reports_to_pdf.py
+│   │    ├── count_code_lines.py
 │   │    └── run_files.py
 │   └── processing/
 │        ├── 01_freqfilt.py
 │        ├── 02_ica.py
 │        ├── 03_psds.py
 │        ├── 04_bandpower.py
-│        └──run_files.py 
+│        └── run_files.py
 └── tests/
     ├── test_01_read_processed_data.py
-    ├── test_02_plot_processed_data.py
-    ├── test_03_fit_model_and_plot.py (WIP)
-    ├── test_04_create_report.py (WIP)
-    └── test_05_convert_reports_to_pdf.py (WIP)
+    ├── test_01_read_processed_data_unittest.py
+    └── test_02_plot_processed_data.py
 ```
 
 ## Installing the package locally in the computer
@@ -166,10 +165,11 @@ The data analysis is done using the scripts in the folder `src/analysis`. The ai
 **Files:**
 - `01_read_processed_data.py`: Reads in EEG bandpower data from CSV files into a dataframe. The dataframe and the arguments used to run the script are added to a pickle object.
 - `02_plot_processed_data.py`: (optional step) Plots the processed EEG data of the PSD intensity for visual assessment.
-- `03_fit_model_and_plot.py`: Fits ML classifiers using the processed data, performs cross validation and evaluates the performance of the classification using ROC curves. Outputs a CSV file with the classification results, plots and saves plots to disk and adds the information to a metadata file.
+- `03_fit_classifier_and_plot.py`: Fits ML classifiers using the processed data, performs cross validation and evaluates the performance of the classification using ROC curves. Outputs a CSV file with the classification results, plots and saves plots to disk and adds the information to a metadata file.
+- `03_psd_topoplots.py`: (WIP) Plots PSD topographic maps across channels.
 - `04_create_report.py`: (optional) Creates an HTML report with the figures created in step 03.
-- `05_convert_report_to_pdf.py`: (optional) Bundle up all htmls into one with a certain cover and create a PDF from it.
-- `run_files.py`:
+- `05_reports_to_pdf.py`: (optional) Bundle up all htmls into one with a certain cover and create a PDF from it.
+- `run_files.py`: Orchestrates the analysis pipeline by running steps 01–05 sequentially for each task (EO, EC, PASAT_1, PASAT_2).
 
 **Inputs:**
 - Processed files: CSV files with bandpower data (in folder `processed_data_dir`)
