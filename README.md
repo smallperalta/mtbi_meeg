@@ -100,7 +100,18 @@ Before the first time you execute the scripts in this repository, you must edit 
     $ nano config_common.py
     # Note: you can also use other editors. For using VS Code, type `code config_common.py`
     ```
-2. Edit the file: add your `user` and `host` to the list. There's a commented block you can use as example [here](https://version.aalto.fi/gitlab/heikkiv7/mtbi-eeg/-/blob/main/python/processing/config_common.py#L78). Copy the block and edit it.
+2. Edit the file: add your `user` and `host` to the list. Copy the commented template block at the bottom of `config_common.py` and fill it in for your machine:
+
+    ```python
+    elif host == '<WORKSTATION>' and user == '<USER>' :
+        # <USER>'s workstation in <WORKPLACE>
+        raw_data_dir = ''
+        processed_data_dir = ''
+        reports_dir = ''
+        figures_dir = ''
+        n_jobs = 4
+        matplotlib_backend = ''
+    ```
 3. Add the path where `raw_data_dir` is expected ('/net/theta/fishpool/projects/tbi_meg/BIDS' in BioMag)
 4. Add the path where `processed_data_dir` is expected (Be mindful which folder you choose, as you may overwrite other people's data)
 5. Add the paths where figures and reports will be created into (you can use the directories in this repository or other)
@@ -121,7 +132,6 @@ $ conda update <package-name>
 ```
 #### Missing raw data dir errors
  If raw data is missing, the repository cannot be used.
-
 
 # Running the pipelines
 Once you have added the required information in config_common and checked that all the dependencies are met, you can run the `preprocessing` or `analysis` sections. If you haven't, please follow the instructions described above.
@@ -208,43 +218,76 @@ An example of the file can be seen below:
 ```
 
 # Instructions for running it in Aalto's HPC
-asdf
 
-## Things that are yet to be implemented:
+## 1. Get access
+Request a Triton account at https://scicomp.aalto.fi/triton/accounts/
+(separate from your Aalto account). Access is free for Aalto researchers.
+
+## 2. Connect
+```bash
+ssh username@triton.aalto.fi
+```
+
+## 3. Set up the environment
+Clone the repository and create the conda environment on Triton.
+Note: the raw data is already available at the BioMag data path
+defined in `config_common.py` — no transfer needed.
+
+```bash
+git clone https://github.com/BioMag/mtbi_meeg
+cd mtbi_meeg
+module load miniconda
+conda env create --file environment.yml
+conda activate mtbi_meeg_conda
+pip install .
+```
+
+## 4. Submit a single subject (serial job)
+Create a file `run_subject.sh`:
+
+```bash
+#!/bin/bash
+#SBATCH --time=02:00:00
+#SBATCH --mem=8G
+#SBATCH --job-name=mtbi_processing
+#SBATCH --output=logs/mtbi_%j.out
+
+module load miniconda
+conda activate mtbi_meeg_conda
+
+cd src/processing
+python3 run_files.py
+```
+
+Submit with:
+```bash
+sbatch run_subject.sh
+```
+
+## 5. Monitor your job
+```bash
+slurm queue        # check status
+slurm history      # see completed jobs
+scancel JOBID      # cancel a job
+```
+
+## 6. Further reading
+- [Triton quickstart](https://scicomp.aalto.fi/triton/quickstart/)
+- [Serial jobs](https://scicomp.aalto.fi/triton/tut/serial/)
+- [Array jobs (per-subject parallelism)](https://scicomp.aalto.fi/triton/tut/array/)
+
+# Things that are yet to be implemented:
 - [x] config file for analysis? 
 - [x] model fitting
 - [ ] hyperparameter optimization, triton-compatible
 - [x] model validation
 - [x] visualizations
 - [x] statistics
+- [ ] Add slurm batching for HPC
 
 
-## Git stuff
+# Contributing
+Contributions welcome — fork the repo, work on a branch, and open a PR against `main`. New to the flow? See [GitHub's PR docs](https://docs.github.com/en/pull-requests).
 
-You can ```git clone``` the repo using HTTPS address.
--  [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
--  [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd ~/mtbi-eeg
-git pull origin main #maybe...
-git branch <your branch name>
-git push
-```
-It is **strongly recommended** to work on separate branches which are later merged to main by the owner of the repo.  
-Merge requests are handled together! Check the branch you are currently on by typing ```git status```. 
-You can change the branch you are one with the command ```git checkout -b <your branch name>```.
-After pushing, create a merge request and assign someone to go through your code.
-
->NOTE: Before creating a new branch, ALWAYS pull the main branch from the remote repository!
-
-
-## Collaboration
-
--  [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
--  [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
--  [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-
-
-## License
+# License
 Project under MIT License
