@@ -9,8 +9,6 @@ The preprocessing and analysis sections are run separately.
 _Authors: Verna Heikkinen, Mia Liljeström, Aino Kuusi, Estanislao Porta_
 
 ## Diagram
-The diagram of the pipeline can be seen in the following diagram:
-
 ![Pipeline diagram](/src/pipeline_diagram.png)
 
 ### Example images on the output data:
@@ -59,13 +57,11 @@ The package can be installed by cloning the repository and using pip install:
 
 ```bash
 $ git clone https://github.com/BioMag/mtbi_meeg
-# cd into the root directory
 $ cd mtbi_meeg
 $ python3 -m pip install .
 ```
-This will install all the necessary dependencies for the package to work. 
 
-In the case that freely installing dependencies in the local computer is not possible or not desirable, an option is to create a conda environment or start a Docker container. Instructions using these two alternative methods are described below. 
+If installing dependencies system-wide isn't possible or desirable, use the conda or Docker setup below instead.
 
 ## Installing in a Conda environment
 1. After cloning the repository, navigate to the root directory.
@@ -85,21 +81,14 @@ In the case that freely installing dependencies in the local computer is not pos
 ## Installing using Docker
 This Dockerfile specifies a base image (`continuumio/miniconda3:latest`), updates conda, installs the necessary dependencies, and copies the `mtbi_meeg` package code into the container. It also sets the working directory and specifies the default command to run when the container starts.
 
-1. Build the Docker image: Run the command `docker build -t mtbi_meeg . ` to build the Docker image. This will create a new image named `mtbi_meeg` based on the Dockerfile.
-
-2. Run the Docker container: Run the command `docker run -it mtbi_meeg` to start the container and run your package. This will start a new container based on the my_package image and run the default command specified in the Dockerfile.
+1. Build the image: `docker build -t mtbi_meeg .`
+2. Run the container: `docker run -it mtbi_meeg`
 
 ## Getting started: config_common and check_system
 
-Before the first time you execute the scripts in this repository, you must edit the file `src/config_common.py` and include a new block with information about your user, workstation, data directories, and matplotlib backend:
+Before the first time you execute the scripts in this repository, you must edit `src/config_common.py` and add a new block with information about your user, workstation, data directories, and matplotlib backend:
 
-1. Go to folder `src` and open the file `config_common.py` for editing. From terminal,
-    ```bash
-    $ cd src
-    $ nano config_common.py
-    # Note: you can also use other editors. For using VS Code, type `code config_common.py`
-    ```
-2. Edit the file: add your `user` and `host` to the list. Copy the commented template block at the bottom of `config_common.py` and fill it in for your machine:
+1. Open `src/config_common.py` and add a new `elif` block for your machine, using this template:
 
     ```python
     elif host == '<WORKSTATION>' and user == '<USER>' :
@@ -111,15 +100,11 @@ Before the first time you execute the scripts in this repository, you must edit 
         n_jobs = 4
         matplotlib_backend = ''
     ```
-3. Add the path where `raw_data_dir` is expected ('/net/theta/fishpool/projects/tbi_meg/BIDS' in BioMag)
-4. Add the path where `processed_data_dir` is expected (Be mindful which folder you choose, as you may overwrite other people's data)
-5. Add the paths where figures and reports will be created into (you can use the directories in this repository or other)
-6. Add the matplotlib backend ("use Qt5Agg for desktop, Agg for headless/HPC")
-7. Check that your system has the required dependencies by running the script `check_system.py`. From terminal, 
-    ```bash
-    $ python3 check_system.py
-    ```
-If there's no problems, you should see a message saying that 'System requirements are ok' and you should be ok to run the pipeline now.
+2. Set `raw_data_dir` ('/net/theta/fishpool/projects/tbi_meg/BIDS' in BioMag).
+3. Set `processed_data_dir` (be mindful which folder you choose, as you may overwrite other people's data).
+4. Set `reports_dir` and `figures_dir` (you can use the directories in this repository or other).
+5. Set `matplotlib_backend` (use `Qt5Agg` for desktop, `Agg` for headless/HPC).
+6. Verify dependencies: `python3 check_system.py`. On success you'll see `System requirements are ok`.
 
 ### Version Conflict errors
 If there is an issue with packages or versions, you will see a message indicating the library with a Version Conflict. Please update the package
@@ -157,7 +142,7 @@ The preprocessing pipeline can be found in `src/processing/`. The aim of this pi
 Go to the folder `src/processing`. Make sure that file `subjects.txt` exists in the folder.
 
 You can run one file at a time using `python3 <filename> <arguments>`.
-Alternatively, you can run the pipeline using the `run_files.py` file. It loops over all steps of the pipeline, using one subject at a time. This means that it will re-run the pipeline as many times as subjects there are.
+Alternatively, you can run the pipeline using the `run_files.py` file. This means that it will re-run the pipeline as many times as subjects there are.
 Since running all the steps for one subject might take a couple of minutes, there's an option to run a test run with only two subjects by modifying the boolean `TEST_RUN` to True in the `run_files.py` file.
 
 ```bash
@@ -204,11 +189,9 @@ $ python3 run_files.py
 ```
 
 ### Subjects as arguments
-The current way of defining the subjects to be processed is either via command line arguments and running each step of the pipeline separately or by using `run_files.py`, along with a file where all the subjects to be processed exist, named `subjects.txt`.
+Subjects can be passed either as command-line arguments to individual scripts, or listed in `subjects.txt` (used by `run_files.py`). Example `subjects.txt`:
 
-An example of the file can be seen below:
 ```python
-# subjects.txt
 01C
 01P
 02C
