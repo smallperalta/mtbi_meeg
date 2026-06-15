@@ -2,7 +2,7 @@ FROM continuumio/miniconda3:latest
 
 RUN conda update conda
 RUN conda install -y -c conda-forge \
-    python=3.8 \
+    python=3.12 \
     doit \
     scipy \
     mne>=1.3 \
@@ -11,7 +11,8 @@ RUN conda install -y -c conda-forge \
     pandas>=1.5.2 \
     scikit-learn>=1.1.2 \
     matplotlib>=3.1.2 \
-    weasyprint>=58.1
+    weasyprint>=58.1 \
+    pytest
 
 COPY . /app
 WORKDIR /app
