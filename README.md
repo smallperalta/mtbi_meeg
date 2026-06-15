@@ -65,6 +65,25 @@ The `-e` flag installs the package in editable mode, so your changes to `src/` t
 If installing dependencies system-wide isn't possible or desirable, use the conda or Docker setup below instead.
 
 ## Installing in a Conda environment
+
+### Installing miniconda (macOS)
+If you don't have conda yet, install miniconda via Homebrew:
+```bash
+$ brew install --cask miniconda
+```
+Then initialize it for your shell (one-time setup) and restart your terminal:
+```bash
+$ conda init "$(basename "${SHELL}")"   # e.g. conda init zsh
+```
+Verify with `conda --version`.
+
+### Installing miniconda (windows)
+Download from https://www.anaconda.com/download/success
+
+### Installign miniconda (Linux)
+Follow instructions from https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install
+
+### Creating the environment
 1. After cloning the repository, navigate to the root directory.
 2. Create the conda environment by running,
     ```
@@ -75,7 +94,8 @@ If installing dependencies system-wide isn't possible or desirable, use the cond
     ```
     $ conda activate mtbi_meeg_conda
     ```
-4. Install the package and its dependencies in editable mode,
+   If `conda activate` errors with "shell has not been properly configured", run `conda init zsh` (or `bash`) and restart your terminal.
+4. Install the package and its dependencies,
     ```
     $ python3 -m pip install -e .
     ```
