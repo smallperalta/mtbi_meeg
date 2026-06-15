@@ -68,6 +68,25 @@ This will install all the necessary dependencies for the package to work.
 In the case that freely installing dependencies in the local computer is not possible or not desirable, an option is to create a conda environment or start a Docker container. Instructions using these two alternative methods are described below. 
 
 ## Installing in a Conda environment
+
+### Installing miniconda (macOS)
+If you don't have conda yet, install miniconda via Homebrew:
+```bash
+$ brew install --cask miniconda
+```
+Then initialize it for your shell (one-time setup) and restart your terminal:
+```bash
+$ conda init "$(basename "${SHELL}")"   # e.g. conda init zsh
+```
+Verify with `conda --version`.
+
+### Installing miniconda (windows)
+Download from https://www.anaconda.com/download/success
+
+### Installign miniconda (Linux)
+Follow instructions from https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install
+
+### Creating the environment
 1. After cloning the repository, navigate to the root directory.
 2. Create the conda environment by running,
     ```
@@ -78,6 +97,7 @@ In the case that freely installing dependencies in the local computer is not pos
     ```
     $ conda activate mtbi_meeg_conda
     ```
+   If `conda activate` errors with "shell has not been properly configured", run `conda init "$(basename "${SHELL}")"` and restart your terminal.
 4. Install the package and its dependencies,
     ```
     $ python3 -m pip install .
