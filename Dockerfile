@@ -12,7 +12,8 @@ RUN conda install -y -c conda-forge \
     scikit-learn>=1.1.2 \
     matplotlib>=3.1.2 \
     weasyprint>=58.1 \
-    pytest
+    pytest \
+    "setuptools<81"
 
 COPY . /app
 WORKDIR /app
