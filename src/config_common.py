@@ -75,6 +75,15 @@ elif 'vdiubuntu' in host and user == 'portae1' :
     figures_dir = '/m/home/home2/20/portae1/unix/biomag/mtbi_meeg/output/figures'
     n_jobs = 4
     matplotlib_backend = 'Qt5Agg' 
+elif 'MacBookPro' in host and user == 'Estanislao.Porta' :
+    # Estanislao's laptop
+    raw_data_dir = '/m/home/home2/20/portae1/unix/biomag/k22_processed' #This is not in use actually
+    processed_data_dir = '/m/home/home2/20/portae1/unix/biomag/k22_processed'
+    reports_dir = '/m/home/home2/20/portae1/unix/biomag/mtbi_meeg/output/reports'
+    figures_dir = '/m/home/home2/20/portae1/unix/biomag/mtbi_meeg/output/figures'
+    n_jobs = 4
+    matplotlib_backend = 'Qt5Agg' 
+
 ## Add new users below
 # elif host == '<WORKSTATION>' and user == '<USER>' :
 #    # <USER>'s workstation in <WORKPLACE>
