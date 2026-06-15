@@ -45,14 +45,19 @@ wide_bands =  [(1,3), (3,5.2), (5.2,7.6), (7.6,10.2), (10.2,13), (13,16), (16,19
 # Parameters pertaining to the subjects
 
 ## All subjects for which there is some form of data available
-all_subjects = os.listdir(raw_data_dir)
-# Filter in directories-only
-all_subjects = [s for s in all_subjects if os.path.isdir(os.path.join(raw_data_dir, s))] # filter out non-directories
-# Remove file 'participants.tsv' if it exists
-if 'participants.tsv' in all_subjects:
-    all_subjects.remove('participants.tsv')
-# Remove the 'sub-' prefix from the list
-all_subjects = [x.replace('sub-', '') for x in all_subjects]
+if os.path.isdir(raw_data_dir):
+    all_subjects = os.listdir(raw_data_dir)
+    # Filter in directories-only
+    all_subjects = [s for s in all_subjects if os.path.isdir(os.path.join(raw_data_dir, s))] # filter out non-directories
+    # Remove file 'participants.tsv' if it exists
+    if 'participants.tsv' in all_subjects:
+        all_subjects.remove('participants.tsv')
+    # Remove the 'sub-' prefix from the list
+    all_subjects = [x.replace('sub-', '') for x in all_subjects]
+else:
+    import warnings
+    warnings.warn(f'raw_data_dir does not exist: {raw_data_dir} — scripts that read raw data will fail at runtime')
+    all_subjects = []
 
 
 bad_subjects= []
