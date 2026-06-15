@@ -58,8 +58,9 @@ The package can be installed by cloning the repository and using pip install:
 ```bash
 $ git clone https://github.com/BioMag/mtbi_meeg
 $ cd mtbi_meeg
-$ python3 -m pip install .
+$ python3 -m pip install -e .
 ```
+The `-e` flag installs the package in editable mode, so your changes to `src/` take effect immediately without reinstalling.
 
 If installing dependencies system-wide isn't possible or desirable, use the conda or Docker setup below instead.
 
@@ -74,9 +75,9 @@ If installing dependencies system-wide isn't possible or desirable, use the cond
     ```
     $ conda activate mtbi_meeg_conda
     ```
-4. Install the package and its dependencies,
+4. Install the package and its dependencies in editable mode,
     ```
-    $ python3 -m pip install .
+    $ python3 -m pip install -e .
     ```
 ## Installing using Docker
 This Dockerfile specifies a base image (`continuumio/miniconda3:latest`), updates conda, installs the necessary dependencies, and copies the `mtbi_meeg` package code into the container. It also sets the working directory and specifies the default command to run when the container starts.
@@ -221,7 +222,7 @@ cd mtbi_meeg
 module load miniconda
 conda env create --file environment.yml
 conda activate mtbi_meeg_conda
-pip install .
+pip install -e .
 ```
 
 ### 4. Submit a single subject (serial job)
