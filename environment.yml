@@ -14,3 +14,4 @@ dependencies:
   - weasyprint>=58.1
   - pytest
   - setuptools<81
+  - torch

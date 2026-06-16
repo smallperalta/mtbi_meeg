@@ -13,7 +13,8 @@ RUN conda install -y -c conda-forge \
     matplotlib>=3.1.2 \
     weasyprint>=58.1 \
     pytest \
-    "setuptools<81"
+    "setuptools<81" \
+    torch
 
 COPY . /app
 WORKDIR /app
