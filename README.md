@@ -8,11 +8,16 @@ The preprocessing and analysis sections are run separately.
 
 _Authors: Verna Heikkinen, Mia Liljeström, Aino Kuusi, Estanislao Porta_
 
-## Diagram
+## Diagram - Sklearn Classification
 ![Pipeline diagram](/src/pipeline_diagram.png)
 
-### Example images on the output data:
-<Add images of the output control plots / ROC / metadata >
+## Experiments - Pytorch Neural Network
+
+The `experiments/` directory contains standalone Jupyter notebooks as an intended new feature of the main pipeline.
+
+### `torch_mlp_nn.ipynb` — PyTorch MLP on EEG bandpower features
+
+A 2-layer neural network classifier using PyTorch, applied to MNE's public `eegbci` dataset (motor-imagery EEG from PhysioNet, 20 subjects). The notebook walks through:
 
 ## Folder structure
 The folder structure for the project is shown below. The root folder is `mtbi_meeg`. The code is under `src`. Common scripts and config files are under `src/`.
@@ -24,6 +29,9 @@ mtbi_meeg/
 ├── README.md
 ├── requirements.txt
 ├── setup.py
+├── experiments
+│   ├── README.md
+│   └── torch_mlp_nn.ipynb
 ├── src/
 │   ├── check_system.py
 │   ├── config_eeg.py

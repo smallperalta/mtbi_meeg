@@ -84,6 +84,7 @@ def test_create_data_frame():
     dataframe = read_processed_data.create_data_frame(subjects_and_tasks, all_bands_vectors)
     assert isinstance(dataframe, pd.DataFrame), "Output is not a Pandas DataFrame"
     assert dataframe.shape == (len(subjects_and_tasks), channels*38 + 2), "Dimensions of DataFrame are wrong"
+    #TODO: add expected vs received dimensions
     assert dataframe["Subject"].dtype == 'object', "Some subjects are not strings"
     assert dataframe["Group"].dtype == 'int64', "Some groups are not integers"
 
