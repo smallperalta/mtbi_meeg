@@ -15,9 +15,7 @@ _Authors: Verna Heikkinen, Mia Liljeström, Aino Kuusi, Estanislao Porta_
 
 The `experiments/` directory contains standalone Jupyter notebooks as an intended new feature of the main pipeline.
 
-### `torch_mlp_nn.ipynb` — PyTorch MLP on EEG bandpower features
-
-A 2-layer neural network classifier using PyTorch, applied to MNE's public `eegbci` dataset (motor-imagery EEG from PhysioNet, 20 subjects). The notebook walks through:
+The file `torch_mlp_nn.ipynb` describes the implementation of MLP on EEG bandpower features. This is a 2-layer neural network classifier using PyTorch, applied to MNE's public `eegbci` dataset (motor-imagery EEG from PhysioNet, 20 subjects). 
 
 ## Folder structure
 The folder structure for the project is shown below. The root folder is `mtbi_meeg`. The code is under `src`. Common scripts and config files are under `src/`.
