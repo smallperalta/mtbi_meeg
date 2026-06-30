@@ -1,27 +1,24 @@
 FROM continuumio/miniconda3:latest
 
-RUN conda update conda
-RUN conda install -y -c conda-forge \
-    python=3.12 \
-    doit \
-    scipy \
-    mne>=1.3 \
-    h5py>=3.8.0 \
-    numpy>=1.20.3 \
-    pandas>=1.5.2 \
-    scikit-learn>=1.1.2 \
-    matplotlib>=3.1.2 \
-    weasyprint>=58.1 \
-    pytest \
-    "setuptools<81" \
-    torch
+# Install mamba in base env for faster dependency resolution
+RUN conda install -n base -c conda-forge mamba -y
 
+# Copy project files into the image
 COPY . /app
 WORKDIR /app
 
-CMD ["python", "my_package.py"]
+# Create the conda env from environment.yml (single source of truth for conda deps)
+RUN mamba env create -f environment.yml
 
-# to run it:
-#    Build the Docker image: Run the command docker build -t mtbi_meeg . to build the Docker image. This will create a new image named my_package based on the Dockerfile.
+# Install the package itself + pip-only deps (e.g. torch) into the conda env
+RUN /opt/conda/envs/mtbi_meeg_conda/bin/pip install -e .
 
-#    Run the Docker container: Run the command docker run -it mtbi_meeg to start the container and run your package. This will start a new container based on the my_package image and run the default command specified in the Dockerfile.
+# Run any command inside the activated conda env by default.
+# `--no-capture-output` keeps stdout/stderr streaming live (otherwise `conda run` buffers everything).
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "mtbi_meeg_conda"]
+CMD ["bash"]
+
+# Usage:
+#   docker build -t mtbi_meeg .
+#   docker run -it mtbi_meeg
+# Inside the container, `python` is the conda env's python; `import torch, mne` should work.

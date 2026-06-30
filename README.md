@@ -106,10 +106,14 @@ Follow instructions from https://www.anaconda.com/docs/getting-started/miniconda
     $ python3 -m pip install -e .
     ```
 ## Installing using Docker
-This Dockerfile specifies a base image (`continuumio/miniconda3:latest`), updates conda, installs the necessary dependencies, and copies the `mtbi_meeg` package code into the container. It also sets the working directory and specifies the default command to run when the container starts.
+The Dockerfile is based on `continuumio/miniconda3:latest` and installs the conda env from `environment.yml` (via mamba for speed), then `pip install -e .` for the package itself. Inside the container, the `mtbi_meeg_conda` env is activated by default.
 
 1. Build the image: `docker build -t mtbi_meeg .`
 2. Run the container: `docker run -it mtbi_meeg`
+
+> **Caveats from real-world testing on macOS + colima:**
+> - The build needs at least **8 GB** of VM memory. With colima: `colima stop && colima start --memory 8`.
+> - The first build takes ~10 minutes (mamba env creation dominates).
 
 ## Getting started: config_common and check_system
 
